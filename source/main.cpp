@@ -87,9 +87,16 @@ struct Ball {
 		if (x < width * .5f) {
 			x = width * .5f;
 			xVector *= -1;
+
+			player2Score++;
+			reset();
+
 		} else if (x > SCREEN_MAX_X - (width * .5f)) {
 			x = SCREEN_MAX_X - (width * .5f);
 			xVector *= -1;
+
+			player1Score++;
+			reset();
 		}
 
 		y += yVector * in_DeltaTime;
@@ -216,6 +223,6 @@ void Gameplay(float in_DeltaTime) {
 	DrawSprite(ball.spriteID);
 
 	char str[10];
-	DrawString(itoa(player1Score,str, 10), player1ScoreX, player1ScoreY);
+	DrawString(itoa(player1Score, str, 10), player1ScoreX, player1ScoreY);
 	DrawString(itoa(player2Score, str, 10), player2ScoreX, player2ScoreY);
 }
