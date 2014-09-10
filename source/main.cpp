@@ -4,10 +4,13 @@
 //prototypes
 void readyPlayers();
 void readyBall();
+void readyScore();
 void Gameplay(float in_DeltaTime);
 
 //constants
 const int SCREEN_MAX_X = 1000, SCREEN_MAX_Y = 700;
+	//Game settings
+const unsigned int scoreCap = 10;
 	//player settings
 const float playerWidth = 30.f;
 const float playerHeight = 250.f;
@@ -22,6 +25,11 @@ const float ballStartXVector = 450.f;
 const float ballStartYVector = 300.f;
 const float ballStartX = SCREEN_MAX_X * .5f;
 const float ballStartY = SCREEN_MAX_Y * .5f;
+	//Score positions
+const float player1ScoreX = SCREEN_MAX_X * .15f;
+const float player1ScoreY = SCREEN_MAX_Y * .95f;
+const float player2ScoreX = SCREEN_MAX_X * .835f;
+const float player2ScoreY = SCREEN_MAX_Y * .95f;
 	//default keybinds
 const unsigned int player1UpKey = 'W';
 const unsigned int player1DownKey = 'S';
@@ -30,6 +38,10 @@ const unsigned int player2DownKey = 264; //down arrow key
 	//textures
 const char* paddelSrc = "./images/crate_sideup.png";
 const char* ballSrc = "./images/invaders/invaders_1_00.png";
+
+//game vars
+unsigned int player1Score;
+unsigned int player2Score;
 
 struct Player {
 	unsigned int spriteID;
@@ -55,6 +67,7 @@ struct Player {
 				y = height * .5f;
 			}
 		}
+
 		MoveSprite(spriteID, x, y);
 	}
 
@@ -120,6 +133,7 @@ struct Ball {
 	}
 };
 
+//entities
 Player player1;
 Player player2;
 Ball ball;
@@ -132,14 +146,14 @@ int main( int argc, char* argv[] )
 
 	readyPlayers();
 	readyBall();
+	readyScore();
 
 
     //Game Loop
     do
 	{
+		ClearScreen();
 		Gameplay(GetDeltaTime());
-
-        ClearScreen();
 
     } while(!FrameworkUpdate());
 
@@ -182,7 +196,16 @@ void readyBall() {
 	MoveSprite(ball.spriteID, ball.x, ball.y);
 }
 
+void readyScore() {
+	player1Score = 0;
+	player2Score = 0;
+}
+
 void Gameplay(float in_DeltaTime) {
+
+	if (IsKeyDown('P')) {
+		player1Score++;
+	}
 
 	//movement
 	player1.move(in_DeltaTime);
@@ -195,4 +218,6 @@ void Gameplay(float in_DeltaTime) {
 	DrawSprite(player1.spriteID);
 	DrawSprite(player2.spriteID);
 	DrawSprite(ball.spriteID);
+	DrawString(player1Score, player1ScoreX, player1ScoreY);
+	DrawString(player2Score, player2ScoreX, player2ScoreY);
 }
