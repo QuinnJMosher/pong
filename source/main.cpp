@@ -203,10 +203,6 @@ void readyScore() {
 
 void Gameplay(float in_DeltaTime) {
 
-	if (IsKeyDown('P')) {
-		player1Score++;
-	}
-
 	//movement
 	player1.move(in_DeltaTime);
 	player2.move(in_DeltaTime);
@@ -218,6 +214,8 @@ void Gameplay(float in_DeltaTime) {
 	DrawSprite(player1.spriteID);
 	DrawSprite(player2.spriteID);
 	DrawSprite(ball.spriteID);
-	DrawString(player1Score, player1ScoreX, player1ScoreY);
-	DrawString(player2Score, player2ScoreX, player2ScoreY);
+
+	char str[10];
+	DrawString(itoa(player1Score,str, 10), player1ScoreX, player1ScoreY);
+	DrawString(itoa(player2Score, str, 10), player2ScoreX, player2ScoreY);
 }
