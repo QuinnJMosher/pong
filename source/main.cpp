@@ -93,7 +93,30 @@ struct Ball {
 	}
 
 	void reset() {
-		x = ballStartX
+		x = ballStartX;
+		y = ballStartY;
+		xVector = ballStartXVector;
+		yVector = ballStartYVector;
+	}
+
+	bool collide(Player other) {
+		bool hasColided = false;
+
+		if (abs(x - other.x) < (width * .5f) + (other.width * .5f) && abs(y - other.y) < (height * .5f) + (other.height * .5f)) {
+
+			if (x - other.x > 0) {
+				x = other.x + ((width * .5f) + (other.width * .5f));
+			} else {
+				x = other.x - ((width * .5f) + (other.width * .5f));
+			}
+
+			xVector *= -1;
+
+			hasColided = true;
+		}
+
+		MoveSprite(spriteID, x, y);
+		return hasColided;
 	}
 };
 
@@ -165,6 +188,8 @@ void Gameplay(float in_DeltaTime) {
 	player1.move(in_DeltaTime);
 	player2.move(in_DeltaTime);
 	ball.move(in_DeltaTime);
+	ball.collide(player1);
+	ball.collide(player2);
 
 	//draw sprites
 	DrawSprite(player1.spriteID);
