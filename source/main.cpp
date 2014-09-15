@@ -5,10 +5,14 @@
 void readyPlayers();
 void readyBall();
 void readyScore();
+void mainMenu();
+void endGame();
 void Gameplay(float in_DeltaTime);
 
 //constants
 const int SCREEN_MAX_X = 1000, SCREEN_MAX_Y = 700;
+	//title text
+const char* titleText0 = "Press Space to begin";
 	//Game settings
 const unsigned int scoreCap = 10;
 	//player settings
@@ -42,6 +46,16 @@ const char* ballSrc = "./images/invaders/invaders_1_00.png";
 //game vars
 unsigned int player1Score;
 unsigned int player2Score;
+
+//Gamestate
+enum GAMESTATE {
+	title,
+	options,
+	gameplay,
+	end
+};
+
+GAMESTATE currentState;
 
 struct Player {
 	unsigned int spriteID;
@@ -151,16 +165,30 @@ int main( int argc, char* argv[] )
 	Initialise(SCREEN_MAX_X, SCREEN_MAX_Y, false, "Pong");
 	SetBackgroundColour(SColour(0, 0, 0, 255));
 
-	readyPlayers();
-	readyBall();
-	readyScore();
+	currentState = title;
 
 
     //Game Loop
     do
 	{
 		ClearScreen();
-		Gameplay(GetDeltaTime());
+
+		switch (currentState) 
+		{
+		case title:
+			mainMenu();
+			break;
+		case options:
+			break;
+		case gameplay:
+			Gameplay(GetDeltaTime());
+			break;
+		case end:
+			endGame();
+			break;
+		default:
+			break;
+		}
 
     } while(!FrameworkUpdate());
 
@@ -208,7 +236,23 @@ void readyScore() {
 	player2Score = 0;
 }
 
+void mainMenu() {
+	if (IsKeyDown(' ')) {
+		readyPlayers();
+		readyBall();
+		readyScore();
+		currentState = gameplay;
+	}
+
+	DrawString(titleText0, SCREEN_MAX_X * .37f, SCREEN_MAX_Y * .2f);
+
+}
+
 void Gameplay(float in_DeltaTime) {
+
+	if (IsKeyDown(256)) {
+		currentState = title;
+	}
 
 	//movement
 	player1.move(in_DeltaTime);
@@ -225,4 +269,14 @@ void Gameplay(float in_DeltaTime) {
 	char str[10];
 	DrawString(itoa(player1Score, str, 10), player1ScoreX, player1ScoreY);
 	DrawString(itoa(player2Score, str, 10), player2ScoreX, player2ScoreY);
+
+	if (player1Score >= scoreCap || player2Score >= scoreCap) {
+		currentState = end;
+	}
+}
+
+void endGame() {
+	if (IsKeyDown(256)) {
+		currentState = title;
+	}
 }
