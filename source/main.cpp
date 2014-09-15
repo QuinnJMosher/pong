@@ -7,20 +7,24 @@
 void readyPlayers();
 void readyBall();
 void readyScore();
+void readyGame();
 void mainMenu();
+void optionsMenu();
 void endGame();
 void Gameplay(float in_DeltaTime);
 
 //constants
 const int SCREEN_MAX_X = 1000, SCREEN_MAX_Y = 700;
-	//title text
-const char* titleText0 = "Press Space to begin";
-	//Game settings
-const unsigned int scoreCap = 10;
+	//lose strings
+const char* titleText0 = "Pong";
+const char* titleText1 = "Press Space to begin";
+const char* titleText2 = "Press O to go to options";
+
+const char* winText0 = "Press escape to reset";
+const char* winText1 = "Player 1 Wins!";
+const char* winText2 = "Player 2 Wins!";
 	//player settings
 const float playerWidth = 30.f;
-const float playerHeight = 200.f;
-const float playerSpeed = 600.f;
 const float playerStartY = SCREEN_MAX_Y * .5f;
 const float player1X = SCREEN_MAX_X * .10f;
 const float player2X = SCREEN_MAX_X * .90f;
@@ -48,6 +52,48 @@ const char* ballSrc = "./images/invaders/invaders_1_00.png";
 //game vars
 unsigned int player1Score;
 unsigned int player2Score;
+
+//Option values
+enum OPT_PADDEL_SIZE {
+	PSz_verySmall = 50,
+	PSz_small = 100,
+	PSz_Normal = 200,
+	PSz_large = 250,
+	PSz_veryLarge = 300
+};
+
+enum OPT_PADDEL_SPEED {
+	PSp_verySlow = 300,
+	PSp_slow = 450,
+	PSp_Normal = 600,
+	PSp_fast = 750,
+	PSp_veryFast = 900
+};
+
+enum OPT_BALL_SPEED {
+	BSp_verySlow = 8,
+	BSp_slow = 9,
+	BSp_Normal = 10,
+	BSp_fast = 11,
+	BSp_veryFast = 12
+};
+
+const unsigned int OPT_SCORE_CAP_MAX = 15;
+const unsigned int OPT_SCORE_CAP_MIN = 1;
+
+
+//Option container
+OPT_PADDEL_SIZE set_paddelSize = PSz_Normal;
+OPT_PADDEL_SPEED set_paddelSpeed = PSp_Normal;
+OPT_BALL_SPEED set_ballSpeed = BSp_Normal;
+unsigned int set_scoreCap = 7;
+
+enum MENU_CURRENT {
+	scoreCap,
+	paddelSize,
+	paddelSpeed,
+	ballSpeed
+};
 
 //Gamestate
 enum GAMESTATE {
@@ -132,6 +178,8 @@ struct Ball {
 		x = ballStartX;
 		y = ballStartY;
 
+		srand(time(NULL));
+
 		if (std::rand() % 2 == 0) {
 			xVector = ballStartXVector;
 		} else {
@@ -139,9 +187,9 @@ struct Ball {
 		}
 
 		if (std::rand() % 2 == 0) {
-			yVector = ((std::rand() % 30) + 10) * 10;
+			yVector = ((std::rand() % 30) + 10) * set_ballSpeed;
 		} else {
-			yVector = -(((std::rand() % 30) + 10) * 10);
+			yVector = -(((std::rand() % 30) + 10) * set_ballSpeed);
 		}
 
 	}
@@ -186,24 +234,27 @@ int main( int argc, char* argv[] )
 	{
 		ClearScreen();
 
-		if (IsKeyDown('R')) {
-			ball.reset();
-		}
-
 		switch (currentState) 
 		{
 		case title:
 			mainMenu();
 			break;
+
 		case options:
+			optionsMenu();
 			break;
+
 		case gameplay:
 			Gameplay(GetDeltaTime());
 			break;
+
 		case end:
 			endGame();
 			break;
+
 		default:
+			std::cout << "State value error";
+			return -1;
 			break;
 		}
 
@@ -217,20 +268,20 @@ int main( int argc, char* argv[] )
 void readyPlayers() {
 	//setup player 1
 	player1.width = playerWidth;
-	player1.height = playerHeight;
+	player1.height = set_paddelSize;
 	player1.x = player1X;
 	player1.y = playerStartY;
-	player1.speed = playerSpeed;
+	player1.speed = set_paddelSpeed;
 	player1.keyUp = player1UpKey;
 	player1.keyDown = player1DownKey;
 	player1.spriteID = CreateSprite(paddelSrc, player1.width, player1.height, true);
 	MoveSprite(player1.spriteID, player1.x, player1.y);
 	//setup player 2
 	player2.width = playerWidth;
-	player2.height = playerHeight;
+	player2.height = set_paddelSize;
 	player2.x = player2X;
 	player2.y = playerStartY;
-	player2.speed = playerSpeed;
+	player2.speed = set_paddelSpeed;
 	player2.keyUp = player2UpKey;
 	player2.keyDown = player2DownKey;
 	player2.spriteID = CreateSprite(paddelSrc, player2.width, player2.height, true);
@@ -250,16 +301,35 @@ void readyScore() {
 	player2Score = 0;
 }
 
+void readyGame() {
+	readyPlayers();
+	readyBall();
+	readyScore();
+	currentState = gameplay;
+}
+
 void mainMenu() {
-	if (IsKeyDown(' ')) {
-		readyPlayers();
-		readyBall();
-		readyScore();
-		currentState = gameplay;
+
+	if (!IsKeyDown(256)) {
+		if (IsKeyDown(' ')) {
+			readyGame();
+		}
+
+		if (IsKeyDown('O')) {
+			currentState = options;
+		}
 	}
 
-	DrawString(titleText0, SCREEN_MAX_X * .37f, SCREEN_MAX_Y * .2f);
+	DrawString(titleText0, SCREEN_MAX_X * .47f, SCREEN_MAX_Y * .5f);
+	DrawString(titleText1, SCREEN_MAX_X * .37f, SCREEN_MAX_Y * .2f);
+	DrawString(titleText2, SCREEN_MAX_X * .35f, SCREEN_MAX_Y * .15f);
 
+}
+
+void optionsMenu() {
+	if (IsKeyDown(256)) {
+		currentState = title;
+	}
 }
 
 void Gameplay(float in_DeltaTime) {
@@ -284,7 +354,7 @@ void Gameplay(float in_DeltaTime) {
 	DrawString(itoa(player1Score, str, 10), player1ScoreX, player1ScoreY);
 	DrawString(itoa(player2Score, str, 10), player2ScoreX, player2ScoreY);
 
-	if (player1Score >= scoreCap || player2Score >= scoreCap) {
+	if (player1Score >= set_scoreCap || player2Score >= set_scoreCap) {
 		currentState = end;
 	}
 }
@@ -293,4 +363,12 @@ void endGame() {
 	if (IsKeyDown(256)) {
 		currentState = title;
 	}
+
+	if (player1Score > player2Score) {
+		DrawString(winText1, player1ScoreX, player1ScoreY);
+	} else {
+		DrawString(winText2, player1ScoreX, player1ScoreY);
+	}
+
+	DrawString(winText0, SCREEN_MAX_X * .37f, SCREEN_MAX_Y * .2f);
 }
