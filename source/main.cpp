@@ -1,5 +1,7 @@
 ﻿#include "AIE.h"
 #include <iostream>
+#include <ctime>
+
 
 //prototypes
 void readyPlayers();
@@ -17,7 +19,7 @@ const char* titleText0 = "Press Space to begin";
 const unsigned int scoreCap = 10;
 	//player settings
 const float playerWidth = 30.f;
-const float playerHeight = 250.f;
+const float playerHeight = 200.f;
 const float playerSpeed = 600.f;
 const float playerStartY = SCREEN_MAX_Y * .5f;
 const float player1X = SCREEN_MAX_X * .10f;
@@ -25,8 +27,8 @@ const float player2X = SCREEN_MAX_X * .90f;
 	//ball settings
 const float ballWidth = 40.f;
 const float ballHeight = 40.f;
-const float ballStartXVector = 450.f;
-const float ballStartYVector = 300.f;
+const float ballStartXVector = 450; //((std::rand() % 45) + 20) * 10
+const float ballStartYVector = 300;
 const float ballStartX = SCREEN_MAX_X * .5f;
 const float ballStartY = SCREEN_MAX_Y * .5f;
 	//Score positions
@@ -129,8 +131,19 @@ struct Ball {
 	void reset() {
 		x = ballStartX;
 		y = ballStartY;
-		xVector = ballStartXVector;
-		yVector = ballStartYVector;
+
+		if (std::rand() % 2 == 0) {
+			xVector = ballStartXVector;
+		} else {
+			xVector = -ballStartXVector;
+		}
+
+		if (std::rand() % 2 == 0) {
+			yVector = ((std::rand() % 30) + 10) * 10;
+		} else {
+			yVector = -(((std::rand() % 30) + 10) * 10);
+		}
+
 	}
 
 	bool collide(Player other) {
@@ -172,6 +185,10 @@ int main( int argc, char* argv[] )
     do
 	{
 		ClearScreen();
+
+		if (IsKeyDown('R')) {
+			ball.reset();
+		}
 
 		switch (currentState) 
 		{
@@ -223,10 +240,7 @@ void readyPlayers() {
 void readyBall() {
 	ball.width = ballWidth;
 	ball.height = ballHeight;
-	ball.x = ballStartX;
-	ball.y = ballStartY;
-	ball.xVector = ballStartXVector;
-	ball.yVector = ballStartYVector;
+	ball.reset();
 	ball.spriteID = CreateSprite(ballSrc, ball.width, ball.height, true);
 	MoveSprite(ball.spriteID, ball.x, ball.y);
 }
