@@ -72,7 +72,7 @@ const char* pongSrc = "./images/pong_texture.png";
 unsigned int player1Score;
 unsigned int player2Score;
 
-//Option values
+//Option presets
 enum OPT_PADDEL_SIZE {
 	PSz_verySmall = 50,
 	PSz_small = 100,
@@ -101,12 +101,13 @@ const unsigned int OPT_SCORE_CAP_MAX = 15;
 const unsigned int OPT_SCORE_CAP_MIN = 1;
 
 
-//Option container
+//Option containers
 OPT_PADDEL_SIZE set_paddelSize = PSz_Normal;
 OPT_PADDEL_SPEED set_paddelSpeed = PSp_Normal;
 OPT_BALL_SPEED set_ballSpeed = BSp_Normal;
 unsigned int set_scoreCap = 7;
 
+//options menu current state
 enum MENU_CURRENT {
 	scoreCap,
 	paddelSize,
@@ -136,10 +137,12 @@ struct Player {
 	unsigned int keyDown;
 
 	void move(float in_DeltaTime) {
-		if (IsKeyDown(keyUp)) {
-			y += speed * in_DeltaTime;
-			if (y > SCREEN_MAX_Y - (height * .5f)){
-				y = SCREEN_MAX_Y - (height * .5f);
+
+		if (IsKeyDown(keyUp)) {//detect keypress
+
+			y += speed * in_DeltaTime;//add movement (deltaTime compinsates for any change in framerate) 
+			if (y > SCREEN_MAX_Y - (height * .5f)){//detect if the paddel has gone off of the screen
+				y = SCREEN_MAX_Y - (height * .5f);//return paddel to screen
 			}
 		}
 
@@ -150,7 +153,7 @@ struct Player {
 			}
 		}
 
-		MoveSprite(spriteID, x, y);
+		MoveSprite(spriteID, x, y);//commit movement
 	}
 
 };
@@ -165,13 +168,14 @@ struct Ball {
 	float yVector;
 
 	void move(float in_DeltaTime) {
-		x += xVector * in_DeltaTime;
-		if (x < width * .5f) {
-			x = width * .5f;
-			xVector *= -1;
 
-			player2Score++;
-			reset();
+		x += xVector * in_DeltaTime;//move in x direction
+		if (x < width * .5f) {// detect screen edge
+			x = width * .5f;//return to screen (irrelivent)
+			xVector *= -1;//reverse x direction bounce (irrelevent)
+
+			player2Score++;//increment score for the goal
+			reset();//recenter ball and give a new vector
 
 		} else if (x > SCREEN_MAX_X - (width * .5f)) {
 			x = SCREEN_MAX_X - (width * .5f);
@@ -181,33 +185,33 @@ struct Ball {
 			reset();
 		}
 
-		y += yVector * in_DeltaTime;
-		if (y < height * .5f) {
-			y = height * .5f;
-			yVector *= -1;
+		y += yVector * in_DeltaTime;//move in y direction
+		if (y < height * .5f) {// check if ball has left screen
+			y = height * .5f;//bring bell back to screen
+			yVector *= -1;//invert direction to make it "Bounce"
 		}
 		else if (y > SCREEN_MAX_Y - (height * .5f)) {
 			y = SCREEN_MAX_Y - (height * .5f);
 			yVector *= -1;
 		}
 
-		MoveSprite(spriteID, x, y);
+		MoveSprite(spriteID, x, y);//finalize movement
 	}
 
 	void reset() {
-		x = ballStartX;
+		x = ballStartX;//reset ball position
 		y = ballStartY;
 
-		srand(time(NULL));
+		srand(time(NULL));//seed RNG
 
-		if (std::rand() % 2 == 0) {
-			xVector = set_ballSpeed;
+		if (std::rand() % 2 == 0) {//generate wether the ball is going left or right
+			xVector = set_ballSpeed;//set ball's speed to what the current option allows
 		} else {
 			xVector = -set_ballSpeed;
 		}
 
-		if (std::rand() % 2 == 0) {
-			yVector = ((std::rand() % 30) + 10) * 10;
+		if (std::rand() % 2 == 0) {//generate wether the ball is going in a more upward or downward direction
+			yVector = ((std::rand() % 30) + 10) * 10;//sets ball to a random speed up or down (random 10 - 39) * 10
 		} else {
 			yVector = -(((std::rand() % 30) + 10) * 10);
 		}
@@ -215,23 +219,23 @@ struct Ball {
 	}
 
 	bool collide(Player other) {
-		bool hasColided = false;
+		bool hasColided = false;//this will be set to true if the ball has colided with the given object
 
-		if (abs(x - other.x) < (width * .5f) + (other.width * .5f) && abs(y - other.y) < (height * .5f) + (other.height * .5f)) {
+		if (abs(x - other.x) < (width * .5f) + (other.width * .5f) && abs(y - other.y) < (height * .5f) + (other.height * .5f)) {//bounce if the ball is within the given paddel's (other) area and is touching on the y direction as well
 
-			if (x - other.x > 0) {
-				x = other.x + ((width * .5f) + (other.width * .5f));
+			if (x - other.x > 0) {//determine wich side the ball needs to be placed on
+				x = other.x + ((width * .5f) + (other.width * .5f));//set ball on the correct side of the paddel
 			} else {
 				x = other.x - ((width * .5f) + (other.width * .5f));
 			}
 
-			xVector *= -1;
+			xVector *= -1;//bounce
 
-			hasColided = true;
+			hasColided = true;//confirm that the ball has bounced
 		}
 
-		MoveSprite(spriteID, x, y);
-		return hasColided;
+		MoveSprite(spriteID, x, y);//commit movement
+		return hasColided;//retur weater or not te ball has bounced
 	}
 };
 
@@ -240,7 +244,7 @@ Player player1;
 Player player2;
 Ball ball;
 
-bool keyDown = false;
+bool keyDown = false;//track weather or not the keys are pressed so that one cane properly navigate the options menu
 
 int main( int argc, char* argv[] )
 {	
