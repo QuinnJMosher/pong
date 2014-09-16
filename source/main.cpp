@@ -23,6 +23,24 @@ const char* titleText2 = "Press O to go to options";
 const char* winText0 = "Press escape to reset";
 const char* winText1 = "Player 1 Wins!";
 const char* winText2 = "Player 2 Wins!";
+
+const char* optText0 = "Score Cap:";
+const char* optText1 = "Paddel Size:";
+const char* optText2 = "Paddel Speed:";
+const char* optText3 = "Ball Speed:";
+const char* optText4 = "Press escape to return to the main menu";
+const char* optText5 = "Use the arrow keys to select and change options";
+const char* optText6 = "Press space to start game";
+
+const char* setText0 = "Normal";
+const char* setText1 = "Very Small";
+const char* setText2 = "Small";
+const char* setText3 = "Large";
+const char* setText4 = "Very Large";
+const char* setText5 = "Very Slow";
+const char* setText6 = "Slow";
+const char* setText7 = "Fast";
+const char* setText8 = "Very Fast";
 	//player settings
 const float playerWidth = 30.f;
 const float playerStartY = SCREEN_MAX_Y * .5f;
@@ -48,6 +66,7 @@ const unsigned int player2DownKey = 264; //down arrow key
 	//textures
 const char* paddelSrc = "./images/crate_sideup.png";
 const char* ballSrc = "./images/invaders/invaders_1_00.png";
+const char* pongSrc = "./images/pong_texture.png";
 
 //game vars
 unsigned int player1Score;
@@ -63,19 +82,19 @@ enum OPT_PADDEL_SIZE {
 };
 
 enum OPT_PADDEL_SPEED {
-	PSp_verySlow = 300,
-	PSp_slow = 450,
+	PSp_verySlow = 100,
+	PSp_slow = 300,
 	PSp_Normal = 600,
-	PSp_fast = 750,
-	PSp_veryFast = 900
+	PSp_fast = 900,
+	PSp_veryFast = 1200
 };
 
 enum OPT_BALL_SPEED {
-	BSp_verySlow = 8,
-	BSp_slow = 9,
-	BSp_Normal = 10,
-	BSp_fast = 11,
-	BSp_veryFast = 12
+	BSp_verySlow = 150,
+	BSp_slow = 250,
+	BSp_Normal = 450,
+	BSp_fast = 650,
+	BSp_veryFast = 850
 };
 
 const unsigned int OPT_SCORE_CAP_MAX = 15;
@@ -104,6 +123,7 @@ enum GAMESTATE {
 };
 
 GAMESTATE currentState;
+MENU_CURRENT currentSelection;
 
 struct Player {
 	unsigned int spriteID;
@@ -181,15 +201,15 @@ struct Ball {
 		srand(time(NULL));
 
 		if (std::rand() % 2 == 0) {
-			xVector = ballStartXVector;
+			xVector = set_ballSpeed;
 		} else {
-			xVector = -ballStartXVector;
+			xVector = -set_ballSpeed;
 		}
 
 		if (std::rand() % 2 == 0) {
-			yVector = ((std::rand() % 30) + 10) * set_ballSpeed;
+			yVector = ((std::rand() % 30) + 10) * 10;
 		} else {
-			yVector = -(((std::rand() % 30) + 10) * set_ballSpeed);
+			yVector = -(((std::rand() % 30) + 10) * 10);
 		}
 
 	}
@@ -219,6 +239,8 @@ struct Ball {
 Player player1;
 Player player2;
 Ball ball;
+
+bool keyDown = false;
 
 int main( int argc, char* argv[] )
 {	
@@ -274,7 +296,7 @@ void readyPlayers() {
 	player1.speed = set_paddelSpeed;
 	player1.keyUp = player1UpKey;
 	player1.keyDown = player1DownKey;
-	player1.spriteID = CreateSprite(paddelSrc, player1.width, player1.height, true);
+	player1.spriteID = CreateSprite(pongSrc, player1.width, player1.height, true);
 	MoveSprite(player1.spriteID, player1.x, player1.y);
 	//setup player 2
 	player2.width = playerWidth;
@@ -284,7 +306,7 @@ void readyPlayers() {
 	player2.speed = set_paddelSpeed;
 	player2.keyUp = player2UpKey;
 	player2.keyDown = player2DownKey;
-	player2.spriteID = CreateSprite(paddelSrc, player2.width, player2.height, true);
+	player2.spriteID = CreateSprite(pongSrc, player2.width, player2.height, true);
 	MoveSprite(player2.spriteID, player2.x, player2.y);
 }
 
@@ -292,7 +314,7 @@ void readyBall() {
 	ball.width = ballWidth;
 	ball.height = ballHeight;
 	ball.reset();
-	ball.spriteID = CreateSprite(ballSrc, ball.width, ball.height, true);
+	ball.spriteID = CreateSprite(pongSrc, ball.width, ball.height, true);
 	MoveSprite(ball.spriteID, ball.x, ball.y);
 }
 
@@ -317,6 +339,7 @@ void mainMenu() {
 
 		if (IsKeyDown('O')) {
 			currentState = options;
+			currentSelection = scoreCap;
 		}
 	}
 
@@ -327,8 +350,297 @@ void mainMenu() {
 }
 
 void optionsMenu() {
+	DrawString(optText5, SCREEN_MAX_X * .2f, SCREEN_MAX_Y *.9f);
 	if (IsKeyDown(256)) {
 		currentState = title;
+	}
+	DrawString(optText4, SCREEN_MAX_X * .25f, SCREEN_MAX_Y *.2f);
+	if (IsKeyDown(' ')) {
+		readyGame();
+	}
+	DrawString(optText6, SCREEN_MAX_X * .35f, SCREEN_MAX_Y *.15f);
+
+	switch (currentSelection) {
+	case scoreCap:
+
+		DrawString(optText0, player1ScoreX, player1ScoreY);
+
+		char str[10];
+		DrawString(itoa(set_scoreCap, str, 10), player2ScoreX, player2ScoreY);
+
+		//change value
+		if (IsKeyDown(263) && !keyDown) {//arrow left
+			set_scoreCap--;
+			if (set_scoreCap < OPT_SCORE_CAP_MIN) {
+				set_scoreCap = OPT_SCORE_CAP_MIN;
+			}
+			keyDown = true;
+		}
+		if (IsKeyDown(262) && !keyDown) {//arrow right
+			set_scoreCap++;
+			if (set_scoreCap > OPT_SCORE_CAP_MAX) {
+				set_scoreCap = OPT_SCORE_CAP_MAX;
+			}
+			keyDown = true;
+		}
+
+		//change state
+		if (IsKeyDown(265) && !keyDown) {//arrow up
+			currentSelection = ballSpeed;
+			keyDown = true;
+		}
+		if (IsKeyDown(264) && !keyDown) {//arrow down
+			currentSelection = paddelSize;
+			keyDown = true;
+		}
+
+		break;
+
+	case paddelSize:
+
+		DrawString(optText1, player1ScoreX, player1ScoreY);
+
+		switch (set_paddelSize) {
+		case PSz_verySmall:
+			DrawString(setText1, player2ScoreX, player2ScoreY);
+			break;
+		case PSz_small:
+			DrawString(setText2, player2ScoreX, player2ScoreY);
+			break;
+		case PSz_Normal:
+			DrawString(setText0, player2ScoreX, player2ScoreY);
+			break;
+		case PSz_large:
+			DrawString(setText3, player2ScoreX, player2ScoreY);
+			break;
+		case PSz_veryLarge:
+			DrawString(setText4, player2ScoreX, player2ScoreY);
+			break;
+		default:
+			std::cout << "setting value error reseting to \"normal\"";
+			set_paddelSize = PSz_Normal;
+			break;
+		}
+
+		//change value
+		if (IsKeyDown(263) && !keyDown) {//arrow left
+			switch (set_paddelSize) {
+			case PSz_verySmall:
+				set_paddelSize = PSz_veryLarge;
+				break;
+			case PSz_small:
+				set_paddelSize = PSz_verySmall;
+				break;
+			case PSz_Normal:
+				set_paddelSize = PSz_small;
+				break;
+			case PSz_large:
+				set_paddelSize = PSz_Normal;
+				break;
+			case PSz_veryLarge:
+				set_paddelSize = PSz_large;
+				break;
+			}
+			keyDown = true;
+		}
+		if (IsKeyDown(262) && !keyDown) {//arrow right
+			switch (set_paddelSize) {
+			case PSz_verySmall:
+				set_paddelSize = PSz_small;
+				break;
+			case PSz_small:
+				set_paddelSize = PSz_Normal;
+				break;
+			case PSz_Normal:
+				set_paddelSize = PSz_large;
+				break;
+			case PSz_large:
+				set_paddelSize = PSz_veryLarge;
+				break;
+			case PSz_veryLarge:
+				set_paddelSize = PSz_verySmall;
+				break;
+			}
+			keyDown = true;
+		}
+
+		//change state
+		if (IsKeyDown(265) && !keyDown) {//arrow up
+			currentSelection = scoreCap;
+			keyDown = true;
+		}
+		if (IsKeyDown(264) && !keyDown) {//arrow down
+			currentSelection = paddelSpeed;
+			keyDown = true;
+		}
+
+		break;
+	case paddelSpeed:
+
+		DrawString(optText2, player1ScoreX, player1ScoreY);
+
+		switch (set_paddelSpeed) {
+		case PSp_verySlow:
+			DrawString(setText5, player2ScoreX, player2ScoreY);
+			break;
+		case PSp_slow:
+			DrawString(setText6, player2ScoreX, player2ScoreY);
+			break;
+		case PSp_Normal:
+			DrawString(setText0, player2ScoreX, player2ScoreY);
+			break;
+		case PSp_fast:
+			DrawString(setText7, player2ScoreX, player2ScoreY);
+			break;
+		case PSp_veryFast:
+			DrawString(setText8, player2ScoreX, player2ScoreY);
+			break;
+		default:
+			std::cout << "setting value error reseting to \"normal\"";
+			set_paddelSpeed = PSp_Normal;
+			break;
+		}
+
+		//change value
+		if (IsKeyDown(263) && !keyDown) {//arrow left
+			switch (set_paddelSpeed) {
+			case PSp_verySlow:
+				set_paddelSpeed = PSp_veryFast;
+				break;
+			case PSp_slow:
+				set_paddelSpeed = PSp_verySlow;
+				break;
+			case PSp_Normal:
+				set_paddelSpeed = PSp_slow;
+				break;
+			case PSp_fast:
+				set_paddelSpeed = PSp_Normal;
+				break;
+			case PSp_veryFast:
+				set_paddelSpeed = PSp_fast;
+				break;
+			}
+			keyDown = true;
+		}
+		if (IsKeyDown(262) && !keyDown) {//arrow right
+			switch (set_paddelSpeed) {
+			case PSp_verySlow:
+				set_paddelSpeed = PSp_slow;
+				break;
+			case PSp_slow:
+				set_paddelSpeed = PSp_Normal;
+				break;
+			case PSp_Normal:
+				set_paddelSpeed = PSp_fast;
+				break;
+			case PSp_fast:
+				set_paddelSpeed = PSp_veryFast;
+				break;
+			case PSp_veryFast:
+				set_paddelSpeed = PSp_verySlow;
+				break;
+			}
+			keyDown = true;
+		}
+
+		//change state
+		if (IsKeyDown(265) && !keyDown) {//arrow up
+			currentSelection = paddelSize;
+			keyDown = true;
+		}
+		if (IsKeyDown(264) && !keyDown) {//arrow down
+			currentSelection = ballSpeed;
+			keyDown = true;
+		}
+
+		break;
+	case ballSpeed:
+
+		DrawString(optText3, player1ScoreX, player1ScoreY);
+
+		switch (set_ballSpeed) {
+		case BSp_verySlow:
+			DrawString(setText5, player2ScoreX, player2ScoreY);
+			break;
+		case BSp_slow:
+			DrawString(setText6, player2ScoreX, player2ScoreY);
+			break;
+		case BSp_Normal:
+			DrawString(setText0, player2ScoreX, player2ScoreY);
+			break;
+		case BSp_fast:
+			DrawString(setText7, player2ScoreX, player2ScoreY);
+			break;
+		case BSp_veryFast:
+			DrawString(setText8, player2ScoreX, player2ScoreY);
+			break;
+		default:
+			std::cout << "setting value error reseting to \"normal\"";
+			set_ballSpeed = BSp_Normal;
+			break;
+		}
+
+		//change value
+		if (IsKeyDown(263) && !keyDown) {//arrow left
+			switch (set_ballSpeed) {
+			case BSp_verySlow:
+				set_ballSpeed = BSp_veryFast;
+				break;
+			case BSp_slow:
+				set_ballSpeed = BSp_verySlow;
+				break;
+			case BSp_Normal:
+				set_ballSpeed = BSp_slow;
+				break;
+			case BSp_fast:
+				set_ballSpeed = BSp_Normal;
+				break;
+			case BSp_veryFast:
+				set_ballSpeed = BSp_fast;
+				break;
+			}
+			keyDown = true;
+		}
+		if (IsKeyDown(262) && !keyDown) {//arrow right
+			switch (set_ballSpeed) {
+			case BSp_verySlow:
+				set_ballSpeed = BSp_slow;
+				break;
+			case BSp_slow:
+				set_ballSpeed = BSp_Normal;
+				break;
+			case BSp_Normal:
+				set_ballSpeed = BSp_fast;
+				break;
+			case BSp_fast:
+				set_ballSpeed = BSp_veryFast;
+				break;
+			case BSp_veryFast:
+				set_ballSpeed = BSp_verySlow;
+				break;
+			}
+			keyDown = true;
+		}
+
+		//change state
+		if (IsKeyDown(265) && !keyDown) {//arrow up
+			currentSelection = paddelSpeed;
+			keyDown = true;
+		}
+		if (IsKeyDown(264) && !keyDown){//arrow down
+			currentSelection = scoreCap;
+			keyDown = true;
+		}
+		break;
+
+	default:
+		std::cout << "current selection value error \n resetting to scoreCap\n";
+		currentSelection = scoreCap;
+		break;
+	}
+
+	if (!IsKeyDown(262) && !IsKeyDown(263) && !IsKeyDown(264) && !IsKeyDown(265)) {
+		keyDown = false;
 	}
 }
 
