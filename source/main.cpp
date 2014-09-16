@@ -1,4 +1,6 @@
-﻿#include "AIE.h"
+﻿/// Pong v1.0 
+/// 9/16/2014
+#include "AIE.h"
 #include <iostream>
 #include <ctime>
 
@@ -49,8 +51,8 @@ const float player2X = SCREEN_MAX_X * .90f;
 	//ball settings
 const float ballWidth = 40.f;
 const float ballHeight = 40.f;
-const float ballStartXVector = 450; //((std::rand() % 45) + 20) * 10
-const float ballStartYVector = 300;
+//const float ballStartXVector = 450;
+//const float ballStartYVector = 300;
 const float ballStartX = SCREEN_MAX_X * .5f;
 const float ballStartY = SCREEN_MAX_Y * .5f;
 	//Score positions
@@ -202,8 +204,6 @@ struct Ball {
 		x = ballStartX;//reset ball position
 		y = ballStartY;
 
-		srand(time(NULL));//seed RNG
-
 		if (std::rand() % 2 == 0) {//generate wether the ball is going left or right
 			xVector = set_ballSpeed;//set ball's speed to what the current option allows
 		} else {
@@ -230,6 +230,11 @@ struct Ball {
 			}
 
 			xVector *= -1;//bounce
+			if (xVector > 0) {
+				xVector += 100;//accelarate
+			} else {
+				yVector -= 100;
+			}
 
 			hasColided = true;//confirm that the ball has bounced
 		}
@@ -246,19 +251,30 @@ Ball ball;
 
 bool keyDown = false;//track weather or not the keys are pressed so that one cane properly navigate the options menu
 
+int randomIntArr[10];
+
 int main( int argc, char* argv[] )
 {	
 
-	Initialise(SCREEN_MAX_X, SCREEN_MAX_Y, false, "Pong");
-	SetBackgroundColour(SColour(0, 0, 0, 255));
+	Initialise(SCREEN_MAX_X, SCREEN_MAX_Y, false, "Pong");//start aie framework
+	SetBackgroundColour(SColour(0, 0, 0, 255));//set background
 
-	currentState = title;
+	currentState = title;//set state
+
+	srand(time(NULL));//seed RNG
+
+	for (int i = 0; i < 10; i++) {//random for loop
+		randomIntArr[i] = rand();
+	}
+	for (int i = 0; i < 10; i++) {//display numbers in random array
+		std::cout << randomIntArr[i] << std::endl;
+	}
 
 
     //Game Loop
     do
 	{
-		ClearScreen();
+		ClearScreen(); 
 
 		switch (currentState) 
 		{
@@ -285,6 +301,10 @@ int main( int argc, char* argv[] )
 		}
 
     } while(!FrameworkUpdate());
+
+	DestroySprite(player1.spriteID);
+	DestroySprite(player2.spriteID);
+	DestroySprite(ball.spriteID);
 
     Shutdown();
 
@@ -338,7 +358,7 @@ void mainMenu() {
 
 	if (!IsKeyDown(256)) {
 		if (IsKeyDown(' ')) {
-			readyGame();
+			readyGame();//meathod changes state
 		}
 
 		if (IsKeyDown('O')) {
@@ -354,7 +374,9 @@ void mainMenu() {
 }
 
 void optionsMenu() {
-	DrawString(optText5, SCREEN_MAX_X * .2f, SCREEN_MAX_Y *.9f);
+	DrawString(optText5, SCREEN_MAX_X * .2f, SCREEN_MAX_Y *.9f);//controll explanation
+
+	//change state input
 	if (IsKeyDown(256)) {
 		currentState = title;
 	}
@@ -367,18 +389,18 @@ void optionsMenu() {
 	switch (currentSelection) {
 	case scoreCap:
 
-		DrawString(optText0, player1ScoreX, player1ScoreY);
+		DrawString(optText0, player1ScoreX, player1ScoreY);//display selected option
 
 		char str[10];
-		DrawString(itoa(set_scoreCap, str, 10), player2ScoreX, player2ScoreY);
+		DrawString(itoa(set_scoreCap, str, 10), player2ScoreX, player2ScoreY);//display current setting
 
 		//change value
 		if (IsKeyDown(263) && !keyDown) {//arrow left
 			set_scoreCap--;
-			if (set_scoreCap < OPT_SCORE_CAP_MIN) {
-				set_scoreCap = OPT_SCORE_CAP_MIN;
+			if (set_scoreCap < OPT_SCORE_CAP_MIN) {//check boundries
+				set_scoreCap = OPT_SCORE_CAP_MIN;//if boundry exceeded, set to max
 			}
-			keyDown = true;
+			keyDown = true;//make a note that an input has been processed (so that it doesn't change on evry frame the button is heald down for)
 		}
 		if (IsKeyDown(262) && !keyDown) {//arrow right
 			set_scoreCap++;
@@ -404,7 +426,7 @@ void optionsMenu() {
 
 		DrawString(optText1, player1ScoreX, player1ScoreY);
 
-		switch (set_paddelSize) {
+		switch (set_paddelSize) {//check the curent value to display the correct text value
 		case PSz_verySmall:
 			DrawString(setText1, player2ScoreX, player2ScoreY);
 			break;
@@ -428,7 +450,7 @@ void optionsMenu() {
 
 		//change value
 		if (IsKeyDown(263) && !keyDown) {//arrow left
-			switch (set_paddelSize) {
+			switch (set_paddelSize) {//check current value to see what value to change to
 			case PSz_verySmall:
 				set_paddelSize = PSz_veryLarge;
 				break;
@@ -644,13 +666,13 @@ void optionsMenu() {
 	}
 
 	if (!IsKeyDown(262) && !IsKeyDown(263) && !IsKeyDown(264) && !IsKeyDown(265)) {
-		keyDown = false;
+		keyDown = false;//if no relevaant buttons are being pressed then we can allow another input
 	}
 }
 
 void Gameplay(float in_DeltaTime) {
 
-	if (IsKeyDown(256)) {
+	if (IsKeyDown(256)) {//change state to reset to title
 		currentState = title;
 	}
 
@@ -666,25 +688,27 @@ void Gameplay(float in_DeltaTime) {
 	DrawSprite(player2.spriteID);
 	DrawSprite(ball.spriteID);
 
-	char str[10];
+	char str[10];//random string added so that my int -> const char* cast will work
+	//draw scores
 	DrawString(itoa(player1Score, str, 10), player1ScoreX, player1ScoreY);
 	DrawString(itoa(player2Score, str, 10), player2ScoreX, player2ScoreY);
 
-	if (player1Score >= set_scoreCap || player2Score >= set_scoreCap) {
+	if (player1Score >= set_scoreCap || player2Score >= set_scoreCap) {//if someone meets the score cap then go to the win screen
 		currentState = end;
 	}
 }
 
 void endGame() {
-	if (IsKeyDown(256)) {
+	if (IsKeyDown(256)) {//reset to title
 		currentState = title;
 	}
 
-	if (player1Score > player2Score) {
+	if (player1Score > player2Score) {//check for the winner
 		DrawString(winText1, player1ScoreX, player1ScoreY);
 	} else {
 		DrawString(winText2, player1ScoreX, player1ScoreY);
 	}
 
+	//tell the player how to reset
 	DrawString(winText0, SCREEN_MAX_X * .37f, SCREEN_MAX_Y * .2f);
 }

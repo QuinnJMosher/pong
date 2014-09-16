@@ -1,0 +1,24 @@
+Pong by Quinn Mosher
+	options can be changed in-game by pressing the O key on the main menu
+
+controlls
+	player one (left paddel):
+		move up -> W key
+		move down -> S key
+	player two (right paddel):
+		move up -> up arrow key
+		move down -> down arrow key
+	options menu:
+		change selected option -> up arrow key & down arrow key
+		change option value -> right arrow key & left arrow key
+	misc:
+		return to main menu -> escape key
+		go to options menu -> O key (from main menu only)
+		start game -> space bar (from main menu & options menu only)
+Game play
+	-once the game has started each player has the objective of getting the ball to hit the side of the screen opposite their paddel,
+	-when this hapens the sucsessfull player's score will increse and be shown as represented by the number at the top of the screen on the player's respective side
+	-when a player's score reaches the score cap (default = 7) that player will have won, the game will end and the winner will be displayed on screen at this time the players can press escape to return to the main menu
+	-the ball's speed will increase each time it hits a paddel and will reset when the ball has been scored
+	-options do not reset between games but will reset if the game is closed
+	-the escape key can be pressed at any time to return the game to the main menu, this will reset any games in progress
