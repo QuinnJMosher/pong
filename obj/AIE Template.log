@@ -1,57 +1,61 @@
-﻿Build started 9/16/2014 3:01:19 PM.
+﻿Build started 9/17/2014 11:34:25 AM.
      1>Project "C:\Users\quinn.mosher\Documents\GitHub\pong\AIE Template.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I./ /I./include/ /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"obj\\" /Fd"obj\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt source\main.cpp
          main.cpp
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(208): warning C4244: '=' : conversion from 'OPT_BALL_SPEED' to 'float', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(210): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(212): warning C4244: '=' : conversion from 'OPT_BALL_SPEED' to 'float', possible loss of data
      1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(214): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(216): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(264): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(317): warning C4244: '=' : conversion from 'OPT_PADDEL_SIZE' to 'float', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(320): warning C4244: '=' : conversion from 'OPT_PADDEL_SPEED' to 'float', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(323): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(327): warning C4244: '=' : conversion from 'OPT_PADDEL_SIZE' to 'float', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(330): warning C4244: '=' : conversion from 'OPT_PADDEL_SPEED' to 'float', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(333): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(341): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(218): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(220): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(270): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(354): warning C4244: '=' : conversion from 'OPT_PADDEL_SIZE' to 'float', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(357): warning C4244: '=' : conversion from 'OPT_PADDEL_SPEED' to 'float', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(360): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(364): warning C4244: '=' : conversion from 'OPT_PADDEL_SIZE' to 'float', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(367): warning C4244: '=' : conversion from 'OPT_PADDEL_SPEED' to 'float', possible loss of data
      1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(370): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(371): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(372): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(377): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(383): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(387): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(392): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(395): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(395): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(378): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(411): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(412): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(413): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(418): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(424): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(428): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(433): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(436): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(436): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : see declaration of 'itoa'
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(427): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(431): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(434): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(437): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(440): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(443): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(506): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(510): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(513): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(516): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(519): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(522): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(585): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(589): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(592): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(595): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(598): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(601): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(693): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(693): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(468): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(472): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(475): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(478): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(481): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(484): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(547): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(551): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(554): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(557): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(560): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(563): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(626): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(630): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(633): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(636): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(639): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(642): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(734): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(734): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : see declaration of 'itoa'
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(694): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(694): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(735): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(735): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : see declaration of 'itoa'
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(707): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(709): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
-     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(713): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(749): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(752): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(769): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(779): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(780): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+     1>c:\users\quinn.mosher\documents\github\pong\source\main.cpp(780): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : see declaration of 'itoa'
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"bin\AIE Template_d.exe" /INCREMENTAL /NOLOGO /LIBPATH:./libs AIE_1st_Year_Framework_d.lib kernel32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"bin\AIE Template_d.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"bin\AIE Template_d.lib" /MACHINE:X86 obj\main.obj
          AIE_1st_Year_Framework_d.lib(SOIL.obj) : MSIL .netmodule or module compiled with /GL found; restarting link with /LTCG; add /LTCG to the link command line to improve linker performance
@@ -87,4 +91,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.46
+Time Elapsed 00:00:01.72

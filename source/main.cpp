@@ -2,8 +2,10 @@
 /// 9/16/2014
 #include "AIE.h"
 #include <iostream>
+#include <fstream>
 #include <ctime>
 
+using namespace std;
 
 //prototypes
 void readyPlayers();
@@ -14,6 +16,7 @@ void mainMenu();
 void optionsMenu();
 void endGame();
 void Gameplay(float in_DeltaTime);
+void showHighScores();
 
 //constants
 const int SCREEN_MAX_X = 1000, SCREEN_MAX_Y = 700;
@@ -122,7 +125,8 @@ enum GAMESTATE {
 	title,
 	options,
 	gameplay,
-	end
+	endg,
+	highScores
 };
 
 GAMESTATE currentState;
@@ -252,6 +256,8 @@ Ball ball;
 bool keyDown = false;//track weather or not the keys are pressed so that one cane properly navigate the options menu
 
 int randomIntArr[10];
+fstream f_highScores;
+int highScore;
 
 int main( int argc, char* argv[] )
 {	
@@ -270,6 +276,33 @@ int main( int argc, char* argv[] )
 		std::cout << randomIntArr[i] << std::endl;
 	}
 
+	f_highScores.open("highscores.txt", ios_base::in);//open file
+
+	if (!f_highScores.is_open()) {//check if file is open
+
+		cout << "file open error, creating new file";
+		f_highScores.open("highscores.txt", ios_base::out);//if there is an error the file may not egsist
+
+		if (!f_highScores.is_open()) {//check for error again
+
+			cout << "file open error, file creation failed";
+
+		} else {
+			//if we created a file we must write in the file
+			f_highScores << 1;
+			highScore = 1;
+
+		}
+
+	} else {
+		//if read is sucsessful then assign the data
+		f_highScores >> highScore;
+
+	}
+
+	f_highScores.sync();
+	f_highScores.close();
+	f_highScores.clear();
 
     //Game Loop
     do
@@ -290,8 +323,12 @@ int main( int argc, char* argv[] )
 			Gameplay(GetDeltaTime());
 			break;
 
-		case end:
+		case endg:
 			endGame();
+			break;
+
+		case highScores:
+			showHighScores();
 			break;
 
 		default:
@@ -364,6 +401,10 @@ void mainMenu() {
 		if (IsKeyDown('O')) {
 			currentState = options;
 			currentSelection = scoreCap;
+		}
+
+		if (IsKeyDown('H')) {
+			currentState = highScores;
 		}
 	}
 
@@ -694,7 +735,7 @@ void Gameplay(float in_DeltaTime) {
 	DrawString(itoa(player2Score, str, 10), player2ScoreX, player2ScoreY);
 
 	if (player1Score >= set_scoreCap || player2Score >= set_scoreCap) {//if someone meets the score cap then go to the win screen
-		currentState = end;
+		currentState = endg;
 	}
 }
 
@@ -703,12 +744,39 @@ void endGame() {
 		currentState = title;
 	}
 
+	int scoreDif;
 	if (player1Score > player2Score) {//check for the winner
 		DrawString(winText1, player1ScoreX, player1ScoreY);
+		scoreDif = player1Score - player2Score;
 	} else {
 		DrawString(winText2, player1ScoreX, player1ScoreY);
+		scoreDif = player2Score - player1Score;
+	}
+
+	if (scoreDif > highScore) {
+		f_highScores.open("highscores.txt", ios_base::out);
+
+		if (!f_highScores.is_open()) {
+			f_highScores << scoreDif;
+		}
+
+		f_highScores.sync();
+		f_highScores.close();
+		f_highScores.clear();
 	}
 
 	//tell the player how to reset
 	DrawString(winText0, SCREEN_MAX_X * .37f, SCREEN_MAX_Y * .2f);
+}
+
+void showHighScores() {
+
+	if (IsKeyDown(256)) {//reset to title
+		currentState = title;
+	}
+
+	char str[10];
+	DrawString("Current high score:", player1ScoreX, player1ScoreY);
+	DrawString(itoa(player1Score, str, 10), player2ScoreX, player2ScoreY);
+	
 }
