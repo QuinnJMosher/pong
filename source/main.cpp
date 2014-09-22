@@ -24,6 +24,7 @@ const int SCREEN_MAX_X = 1000, SCREEN_MAX_Y = 700;
 const char* titleText0 = "Pong";
 const char* titleText1 = "Press Space to begin";
 const char* titleText2 = "Press O to go to options";
+const char* titleText3 = "Press H to see the high score";
 
 const char* winText0 = "Press escape to reset";
 const char* winText1 = "Player 1 Wins!";
@@ -258,6 +259,7 @@ bool keyDown = false;//track weather or not the keys are pressed so that one can
 int randomIntArr[10];
 fstream f_highScores;
 int highScore;
+bool scoreWriteable = true;
 
 int main( int argc, char* argv[] )
 {	
@@ -296,8 +298,10 @@ int main( int argc, char* argv[] )
 
 	} else {
 		//if read is sucsessful then assign the data
-		f_highScores >> highScore;
+		int value = 0;
+		f_highScores >> value;
 
+		highScore = value;
 	}
 
 	f_highScores.sync();
@@ -411,6 +415,7 @@ void mainMenu() {
 	DrawString(titleText0, SCREEN_MAX_X * .47f, SCREEN_MAX_Y * .5f);
 	DrawString(titleText1, SCREEN_MAX_X * .37f, SCREEN_MAX_Y * .2f);
 	DrawString(titleText2, SCREEN_MAX_X * .35f, SCREEN_MAX_Y * .15f);
+	DrawString(titleText3, SCREEN_MAX_X * .315f, SCREEN_MAX_Y * .1f);
 
 }
 
@@ -736,6 +741,7 @@ void Gameplay(float in_DeltaTime) {
 
 	if (player1Score >= set_scoreCap || player2Score >= set_scoreCap) {//if someone meets the score cap then go to the win screen
 		currentState = endg;
+		scoreWriteable = true;
 	}
 }
 
@@ -753,16 +759,20 @@ void endGame() {
 		scoreDif = player2Score - player1Score;
 	}
 
-	if (scoreDif > highScore) {
+	if (scoreDif > highScore && scoreWriteable) {
 		f_highScores.open("highscores.txt", ios_base::out);
 
-		if (!f_highScores.is_open()) {
+		if (f_highScores.is_open()) {
 			f_highScores << scoreDif;
+			highScore = scoreDif;
+		} else {
+			cout << "Score write failed";
 		}
 
 		f_highScores.sync();
 		f_highScores.close();
 		f_highScores.clear();
+		scoreWriteable = false;
 	}
 
 	//tell the player how to reset
@@ -777,6 +787,6 @@ void showHighScores() {
 
 	char str[10];
 	DrawString("Current high score:", player1ScoreX, player1ScoreY);
-	DrawString(itoa(player1Score, str, 10), player2ScoreX, player2ScoreY);
+	DrawString(itoa(highScore, str, 10), player2ScoreX, player2ScoreY);
 	
 }
